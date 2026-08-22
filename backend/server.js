@@ -27,6 +27,10 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/mandi-price', require('./routes/mandiPrice'));
 app.use('/api/weather', require('./routes/weather'));
 app.use('/api/farm-news', require('./routes/farmNews'));
+app.use('/api/soil-test', require('./routes/soilTest'));
+app.use('/api/farm', require('./routes/farm'));
+app.use('/api/crop-calendar', require('./routes/cropCalendar'));
+app.use('/api/farm-management', require('./routes/farmManagement'));
 
 // Health check
 app.get('/api/health', (req, res) => {

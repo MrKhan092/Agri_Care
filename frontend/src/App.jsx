@@ -11,6 +11,8 @@ import MandiPrice from './pages/MandiPrice';
 import Weather from './pages/Weather';
 import LandRecords from './pages/LandRecords';
 import FarmNews from './pages/FarmNews';
+import SoilBooking from './pages/SoilBooking';
+import SoilAnalysis from './pages/SoilAnalysis';
 
 // Smart redirect based on role
 function RoleRedirect() {
@@ -89,6 +91,22 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['farmer']}>
                 <FarmNews />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/soil-booking"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <SoilBooking />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/soil-analysis"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <SoilAnalysis />
               </ProtectedRoute>
             }
           />

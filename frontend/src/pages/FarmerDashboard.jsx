@@ -55,6 +55,20 @@ export default function FarmerDashboard() {
       path: '/farmer/news',
       color: 'feature-purple',
     },
+    {
+      icon: '🧪',
+      title: 'Book Soil Test',
+      description: 'Schedule a soil testing visit for your farm',
+      path: '/farmer/soil-booking',
+      color: 'feature-teal',
+    },
+    {
+      icon: '🔬',
+      title: 'Soil Analysis',
+      description: 'Upload a report or enter values for recommendations',
+      path: '/farmer/soil-analysis',
+      color: 'feature-rose',
+    },
   ];
 
   return (

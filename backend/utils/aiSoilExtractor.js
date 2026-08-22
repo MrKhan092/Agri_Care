@@ -2,6 +2,11 @@ const Groq = require('groq-sdk');
 
 const SOIL_PARAMS = ['pH', 'nitrogen', 'phosphorus', 'potassium', 'organicCarbon', 'ec', 'sulphur', 'zinc', 'iron', 'manganese', 'copper', 'boron'];
 
+// llama-3.3-70b-versatile was deprecated by Groq — openai/gpt-oss-120b is the
+// current free general-purpose model. Check console.groq.com/docs/models if
+// this stops working, Groq's free lineup changes periodically.
+const MODEL = 'openai/gpt-oss-120b';
+
 /**
  * AI-powered extraction of soil parameters from raw PDF text using Groq.
  */
@@ -38,7 +43,7 @@ Text to extract from:
 ${rawText.slice(0, 4000)}`;
 
   const completion = await groq.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: MODEL,
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.1,
     max_tokens: 500,
@@ -85,7 +90,7 @@ Soil Analysis:
 ${analysisText}`;
 
   const completion = await groq.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: MODEL,
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.4,
     max_tokens: 300,
@@ -96,24 +101,30 @@ ${analysisText}`;
 
 /**
  * Regex-based fallback extractor for when AI is unavailable.
+ *
+ * IMPORTANT: many soil report PDFs put a parenthetical abbreviation between the
+ * label and the value, e.g. "Available Nitrogen (N) 245 kg/ha" — so we can't
+ * require only whitespace/colon/equals before the number. Instead we allow up
+ * to ~20 non-digit characters (covers "(N)", "(P)", "(OC)", etc.) before the
+ * numeric value.
  */
 function extractParamsFromText(rawText) {
   const text = rawText.replace(/\s+/g, ' ');
   const result = {};
 
   const patterns = {
-    pH: /\bpH\b[:\s=]*(\d+\.?\d*)/i,
-    nitrogen: /\b(?:nitrogen|available\s*n|avail\.?\s*n)\b[:\s=]*(\d+\.?\d*)/i,
-    phosphorus: /\b(?:phosphorus|available\s*p|avail\.?\s*p|P2O5)\b[:\s=]*(\d+\.?\d*)/i,
-    potassium: /\b(?:potassium|available\s*k|avail\.?\s*k|K2O)\b[:\s=]*(\d+\.?\d*)/i,
-    organicCarbon: /\b(?:organic\s*carbon|OC|org\.?\s*carbon)\b[:\s=]*(\d+\.?\d*)/i,
-    ec: /\b(?:EC|electrical\s*conductivity)\b[:\s=]*(\d+\.?\d*)/i,
-    sulphur: /\b(?:sulphur|sulfur|available\s*s)\b[:\s=]*(\d+\.?\d*)/i,
-    zinc: /\b(?:zinc|Zn)\b[:\s=]*(\d+\.?\d*)/i,
-    iron: /\b(?:iron|Fe)\b[:\s=]*(\d+\.?\d*)/i,
-    manganese: /\b(?:manganese|Mn)\b[:\s=]*(\d+\.?\d*)/i,
-    copper: /\b(?:copper|Cu)\b[:\s=]*(\d+\.?\d*)/i,
-    boron: /\b(?:boron|B)\b[:\s=]*(\d+\.?\d*)/i,
+    pH: /\bpH\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    nitrogen: /\b(?:nitrogen|available\s*n|avail\.?\s*n)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    phosphorus: /\b(?:phosphorus|available\s*p|avail\.?\s*p|P2O5)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    potassium: /\b(?:potassium|available\s*k|avail\.?\s*k|K2O)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    organicCarbon: /\b(?:organic\s*carbon|OC|org\.?\s*carbon)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    ec: /\b(?:EC|electrical\s*conductivity)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    sulphur: /\b(?:sulphur|sulfur|available\s*s)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    zinc: /\b(?:zinc|Zn)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    iron: /\b(?:iron|Fe)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    manganese: /\b(?:manganese|Mn)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    copper: /\b(?:copper|Cu)\b[^0-9]{0,20}(\d+\.?\d*)/i,
+    boron: /\b(?:boron|B)\b[^0-9]{0,20}(\d+\.?\d*)/i,
   };
 
   for (const [key, regex] of Object.entries(patterns)) {

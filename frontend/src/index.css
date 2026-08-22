@@ -1556,3 +1556,422 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Feature Card: Teal & Rose ===== */
+.feature-nav-card.feature-teal {
+  border-left-color: #0d9488;
+}
+.feature-nav-card.feature-teal:hover {
+  background: #f0fdfa;
+}
+.feature-nav-card.feature-rose {
+  border-left-color: #e11d48;
+}
+.feature-nav-card.feature-rose:hover {
+  background: #fff1f2;
+}
+
+/* ===== Form Input (reusable) ===== */
+.form-input {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--clr-text);
+  background: var(--clr-surface);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+  width: 100%;
+}
+.form-input:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px var(--clr-primary-light);
+}
+.form-error {
+  color: #dc2626;
+  font-size: 0.82rem;
+  margin: 0.5rem 0;
+}
+
+/* ===== Booking Form ===== */
+.booking-form-card {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.booking-form-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--clr-primary-dark);
+}
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+/* ===== Alert ===== */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.alert-success {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #166534;
+}
+.alert-error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+.alert strong {
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.alert p {
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+/* ===== Status Badges ===== */
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-confirmed { background: #dbeafe; color: #1e40af; }
+.status-completed { background: #d1fae5; color: #065f46; }
+.status-cancelled { background: #fee2e2; color: #991b1b; }
+
+/* ===== Booking Cards ===== */
+.bookings-section {
+  margin-top: 1.5rem;
+}
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.booking-card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.15rem;
+  box-shadow: var(--shadow);
+}
+.booking-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+.booking-date-slot {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.booking-card-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.82rem;
+  color: var(--clr-text-muted);
+}
+
+/* ===== Tabs ===== */
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--clr-border);
+}
+.tab {
+  padding: 0.7rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  transition: all var(--transition);
+  font-family: inherit;
+}
+.tab:hover {
+  color: var(--clr-primary);
+}
+.tab-active {
+  color: var(--clr-primary);
+  border-bottom-color: var(--clr-primary);
+}
+
+/* ===== Soil Input Card ===== */
+.soil-input-card {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.soil-input-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+.soil-input-hint {
+  font-size: 0.82rem;
+  color: var(--clr-text-muted);
+  margin-bottom: 1rem;
+}
+
+/* File Upload */
+.file-upload-area {
+  margin-bottom: 1rem;
+}
+.file-input {
+  display: none;
+}
+.file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  border: 2px dashed var(--clr-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  transition: all var(--transition);
+  background: var(--clr-bg);
+}
+.file-label:hover {
+  border-color: var(--clr-primary);
+  background: var(--clr-primary-light);
+  color: var(--clr-primary-dark);
+}
+
+/* Soil Params Grid */
+.soil-params-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.soil-param-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.soil-param-input label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+.param-unit {
+  font-weight: 400;
+  color: var(--clr-text-muted);
+  font-size: 0.72rem;
+}
+
+/* ===== Farmer Summary Card ===== */
+.farmer-summary-card {
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border: 1px solid #86efac;
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.farmer-summary-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+.farmer-summary-card p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #14532d;
+  white-space: pre-line;
+}
+
+/* ===== Analysis Table ===== */
+.analysis-table {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.analysis-header {
+  display: grid;
+  grid-template-columns: 1.2fr 0.6fr 0.8fr 2fr;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--clr-bg);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--clr-text-muted);
+  border-bottom: 1px solid var(--clr-border);
+}
+.analysis-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.6fr 0.8fr 2fr;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--clr-border);
+  align-items: center;
+  transition: background var(--transition);
+}
+.analysis-row:last-child {
+  border-bottom: none;
+}
+.analysis-row:hover {
+  background: var(--clr-bg);
+}
+.analysis-param {
+  font-weight: 600;
+}
+.analysis-value {
+  font-weight: 600;
+  color: var(--clr-text);
+}
+.analysis-rating {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+}
+.rating-good {
+  background: #d1fae5;
+  color: #065f46;
+}
+.rating-bad {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.rating-warn {
+  background: #fef3c7;
+  color: #92400e;
+}
+.analysis-rec {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  line-height: 1.4;
+}
+
+/* ===== Past Reports ===== */
+.past-reports-section {
+  margin-top: 1.5rem;
+}
+.past-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.past-report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition);
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  box-shadow: var(--shadow);
+}
+.past-report-item:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.past-report-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.past-report-icon {
+  font-size: 1.25rem;
+}
+.past-report-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.past-report-date {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+}
+.past-report-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--clr-text-muted);
+}
+.past-report-arrow {
+  font-size: 1rem;
+  transition: transform var(--transition);
+}
+.past-report-item:hover .past-report-arrow {
+  transform: translateX(3px);
+}
+
+/* ===== Soil Responsive ===== */
+@media (max-width: 700px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .soil-params-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .analysis-header,
+  .analysis-row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+  .analysis-header {
+    display: none;
+  }
+  .analysis-row {
+    padding: 0.85rem 1rem;
+  }
+  .analysis-param::before { content: ''; }
+  .analysis-rating { justify-self: start; }
+  .analysis-rec {
+    font-size: 0.78rem;
+    grid-column: 1;
+  }
+}
