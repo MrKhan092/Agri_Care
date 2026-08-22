@@ -24,7 +24,7 @@ const sendTokenCookie = (res, userId) => {
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, state, district } = req.body;
 
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: 'Please fill in all required fields' });
@@ -46,6 +46,8 @@ router.post('/register', async (req, res) => {
       password,
       role,
       status: 'approved',
+      state: state || '',
+      district: district || '',
     });
 
     sendTokenCookie(res, user._id);
@@ -57,6 +59,8 @@ router.post('/register', async (req, res) => {
         email: user.email,
         role: user.role,
         status: user.status,
+        state: user.state,
+        district: user.district,
       },
     });
   } catch (error) {
@@ -94,6 +98,8 @@ router.post('/login', async (req, res) => {
         email: user.email,
         role: user.role,
         status: user.status,
+        state: user.state || '',
+        district: user.district || '',
       },
     });
   } catch (error) {
@@ -119,6 +125,8 @@ router.get('/me', protect, (req, res) => {
       email: req.user.email,
       role: req.user.role,
       status: req.user.status,
+      state: req.user.state || '',
+      district: req.user.district || '',
     },
   });
 });

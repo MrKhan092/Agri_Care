@@ -7,6 +7,10 @@ import AdminDashboard from './pages/AdminDashboard';
 import FarmerDashboard from './pages/FarmerDashboard';
 import SupplierDashboard from './pages/SupplierDashboard';
 import Unauthorized from './pages/Unauthorized';
+import MandiPrice from './pages/MandiPrice';
+import Weather from './pages/Weather';
+import LandRecords from './pages/LandRecords';
+import FarmNews from './pages/FarmNews';
 
 // Smart redirect based on role
 function RoleRedirect() {
@@ -37,8 +41,6 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
-
-
           {/* Admin */}
           <Route
             path="/admin/dashboard"
@@ -55,6 +57,38 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['farmer']}>
                 <FarmerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/mandi-price"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <MandiPrice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/weather"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <Weather />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/land-records"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <LandRecords />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/news"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <FarmNews />
               </ProtectedRoute>
             }
           />

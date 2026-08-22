@@ -32,6 +32,16 @@ const userSchema = new mongoose.Schema(
       default: 'pending',
     },
 
+    // Location fields
+    state: {
+      type: String,
+      default: '',
+    },
+    district: {
+      type: String,
+      default: '',
+    },
+
     // Farmer-specific fields
     farmLocation: {
       type: String,

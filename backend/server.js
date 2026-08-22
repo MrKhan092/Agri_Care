@@ -24,6 +24,9 @@ app.use(cookieParser());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/mandi-price', require('./routes/mandiPrice'));
+app.use('/api/weather', require('./routes/weather'));
+app.use('/api/farm-news', require('./routes/farmNews'));
 
 // Health check
 app.get('/api/health', (req, res) => {

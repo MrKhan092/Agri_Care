@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 
@@ -6,6 +7,7 @@ export default function FarmerDashboard() {
   const { user, logout } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -23,6 +25,37 @@ export default function FarmerDashboard() {
       </div>
     );
   }
+
+  const features = [
+    {
+      icon: '🏪',
+      title: 'Mandi Prices',
+      description: 'Check today\'s market prices for crops across India',
+      path: '/farmer/mandi-price',
+      color: 'feature-green',
+    },
+    {
+      icon: '🌤️',
+      title: 'Weather',
+      description: 'View current weather and 5-day forecast for your area',
+      path: '/farmer/weather',
+      color: 'feature-blue',
+    },
+    {
+      icon: '📜',
+      title: 'Land Records',
+      description: 'Access official land records (Bhulekh) for your state',
+      path: '/farmer/land-records',
+      color: 'feature-amber',
+    },
+    {
+      icon: '📰',
+      title: 'Farm News',
+      description: 'Latest agriculture and farming news from India',
+      path: '/farmer/news',
+      color: 'feature-purple',
+    },
+  ];
 
   return (
     <div className="dashboard">
@@ -61,6 +94,27 @@ export default function FarmerDashboard() {
             <p className="stat-value">{data?.upcomingTasks?.length ?? '—'}</p>
             <p className="stat-label">Upcoming Tasks</p>
           </div>
+        </div>
+      </section>
+
+      {/* Feature Navigation Cards */}
+      <section className="feature-nav-section">
+        <h2 className="section-title">Quick Access</h2>
+        <div className="feature-nav-grid">
+          {features.map((f) => (
+            <button
+              key={f.path}
+              className={`feature-nav-card ${f.color}`}
+              onClick={() => navigate(f.path)}
+            >
+              <span className="feature-nav-icon">{f.icon}</span>
+              <div className="feature-nav-info">
+                <h3>{f.title}</h3>
+                <p>{f.description}</p>
+              </div>
+              <span className="feature-nav-arrow">→</span>
+            </button>
+          ))}
         </div>
       </section>
 
