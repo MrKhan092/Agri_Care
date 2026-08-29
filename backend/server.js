@@ -31,6 +31,7 @@ app.use('/api/soil-test', require('./routes/soilTest'));
 app.use('/api/farm', require('./routes/farm'));
 app.use('/api/crop-calendar', require('./routes/cropCalendar'));
 app.use('/api/farm-management', require('./routes/farmManagement'));
+app.use('/api/schemes', require('./routes/schemes'));
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -13,6 +13,11 @@ import LandRecords from './pages/LandRecords';
 import FarmNews from './pages/FarmNews';
 import SoilBooking from './pages/SoilBooking';
 import SoilAnalysis from './pages/SoilAnalysis';
+import FarmProfile from './pages/FarmProfile';
+import CropCalendar from './pages/CropCalendar';
+import FarmManagement from './pages/FarmManagement';
+import GovSchemes from './pages/GovSchemes';
+import LandingPage from './pages/LandingPage';
 
 // Smart redirect based on role
 function RoleRedirect() {
@@ -39,6 +44,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           {/* Public */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
@@ -107,6 +113,38 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['farmer']}>
                 <SoilAnalysis />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/farm-profile"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <FarmProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/crop-calendar/:cropId"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <CropCalendar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/farm-management"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <FarmManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/farmer/schemes"
+            element={
+              <ProtectedRoute allowedRoles={['farmer']}>
+                <GovSchemes />
               </ProtectedRoute>
             }
           />

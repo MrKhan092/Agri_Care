@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 
 export default function FarmerDashboard() {
   const { user, logout } = useAuth();
   const [data, setData] = useState(null);
+  const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -15,6 +16,13 @@ export default function FarmerDashboard() {
       .then((res) => setData(res.data.data))
       .catch((err) => console.error('Dashboard fetch error:', err))
       .finally(() => setLoading(false));
+
+    // Fetch weather silently
+    if (user?.state) {
+      api.get(`/weather?city=${user.district || user.state}`)
+        .then((res) => setWeather(res.data))
+        .catch(() => {});
+    }
   }, []);
 
   if (loading) {
@@ -28,160 +36,193 @@ export default function FarmerDashboard() {
 
   const features = [
     {
-      icon: '🏪',
-      title: 'Mandi Prices',
-      description: 'Check today\'s market prices for crops across India',
-      path: '/farmer/mandi-price',
-      color: 'feature-green',
+      icon: '🏪', title: 'Mandi Prices',
+      description: 'Live market commodity prices', path: '/farmer/mandi-price',
+      gradient: 'fcard-green',
     },
     {
-      icon: '🌤️',
-      title: 'Weather',
-      description: 'View current weather and 5-day forecast for your area',
-      path: '/farmer/weather',
-      color: 'feature-blue',
+      icon: '📜', title: 'Land Records',
+      description: 'Official Bhulekh land records', path: '/farmer/land-records',
+      gradient: 'fcard-amber',
     },
     {
-      icon: '📜',
-      title: 'Land Records',
-      description: 'Access official land records (Bhulekh) for your state',
-      path: '/farmer/land-records',
-      color: 'feature-amber',
+      icon: '📰', title: 'Farm News',
+      description: 'Daily agriculture headlines', path: '/farmer/news',
+      gradient: 'fcard-purple',
     },
     {
-      icon: '📰',
-      title: 'Farm News',
-      description: 'Latest agriculture and farming news from India',
-      path: '/farmer/news',
-      color: 'feature-purple',
+      icon: '🧪', title: 'Soil Test',
+      description: 'Book a soil testing visit', path: '/farmer/soil-booking',
+      gradient: 'fcard-teal',
     },
     {
-      icon: '🧪',
-      title: 'Book Soil Test',
-      description: 'Schedule a soil testing visit for your farm',
-      path: '/farmer/soil-booking',
-      color: 'feature-teal',
+      icon: '🔬', title: 'Soil Analysis',
+      description: 'AI-powered soil reports', path: '/farmer/soil-analysis',
+      gradient: 'fcard-rose',
     },
     {
-      icon: '🔬',
-      title: 'Soil Analysis',
-      description: 'Upload a report or enter values for recommendations',
-      path: '/farmer/soil-analysis',
-      color: 'feature-rose',
+      icon: '🏡', title: 'My Farm',
+      description: 'Profile, crops & timelines', path: '/farmer/farm-profile',
+      gradient: 'fcard-emerald',
+    },
+    {
+      icon: '💰', title: 'Farm Finance',
+      description: 'Expenses, income & inventory', path: '/farmer/farm-management',
+      gradient: 'fcard-orange',
+    },
+    {
+      icon: '🏛️', title: 'Govt Schemes',
+      description: 'Subsidies, insurance & credit', path: '/farmer/schemes',
+      gradient: 'fcard-indigo',
     },
   ];
 
+  const currentHour = new Date().getHours();
+  const greeting = currentHour < 12 ? 'Good Morning' : currentHour < 17 ? 'Good Afternoon' : 'Good Evening';
+
+  const weatherIcon = weather?.current
+    ? weather.current.weather?.[0]?.icon
+      ? `https://openweathermap.org/img/wn/${weather.current.weather[0].icon}.png`
+      : null
+    : null;
+  const temp = weather?.current?.main?.temp;
+  const weatherDesc = weather?.current?.weather?.[0]?.description;
+  const humidity = weather?.current?.main?.humidity;
+
   return (
-    <div className="dashboard">
-      <header className="dashboard-header">
-        <div className="dashboard-brand">
-          <span className="brand-icon">🌾</span>
-          <h1>AgriCare</h1>
-          <span className="role-badge role-farmer">Farmer</span>
-        </div>
-        <div className="dashboard-user">
-          <span className="user-greeting">Hi, {user?.name}</span>
-          <button onClick={logout} className="btn btn-outline btn-sm">
-            Logout
-          </button>
+    <div className="dash-v2">
+      {/* Top Bar */}
+      <header className="dash-topbar">
+        <div className="dash-topbar-inner">
+          <Link to="/" className="dash-logo">
+            <span className="dash-logo-icon">🌾</span>
+            <span className="dash-logo-text">AgriCare</span>
+          </Link>
+          <div className="dash-topbar-right">
+            {/* Weather Pill */}
+            {temp && (
+              <button className="weather-pill" onClick={() => navigate('/farmer/weather')}>
+                {weatherIcon && <img src={weatherIcon} alt="" className="weather-pill-icon" />}
+                <span className="weather-pill-temp">{Math.round(temp)}°C</span>
+                <span className="weather-pill-desc">{weatherDesc}</span>
+                {humidity && <span className="weather-pill-humidity">💧 {humidity}%</span>}
+              </button>
+            )}
+            <span className="dash-user-name">{user?.name}</span>
+            <button onClick={logout} className="dash-logout-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </button>
+          </div>
         </div>
       </header>
 
-      <section className="stats-grid">
-        <div className="stat-card">
-          <span className="stat-icon">🌿</span>
-          <div>
-            <p className="stat-value">{data?.totalCrops ?? '—'}</p>
-            <p className="stat-label">Total Crops</p>
-          </div>
+      {/* Hero Section */}
+      <section className="dash-hero">
+        <div className="dash-hero-content">
+          <p className="dash-greeting">{greeting},</p>
+          <h1 className="dash-hero-name">{user?.name?.split(' ')[0]} 👋</h1>
+          <p className="dash-hero-sub">Here's what's happening on your farm today</p>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon">📐</span>
-          <div>
-            <p className="stat-value">{data?.activePlots ?? '—'}</p>
-            <p className="stat-label">Active Plots</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <span className="stat-icon">📋</span>
-          <div>
-            <p className="stat-value">{data?.upcomingTasks?.length ?? '—'}</p>
-            <p className="stat-label">Upcoming Tasks</p>
-          </div>
-        </div>
+        <div className="dash-hero-glow"></div>
       </section>
 
-      {/* Feature Navigation Cards */}
-      <section className="feature-nav-section">
-        <h2 className="section-title">Quick Access</h2>
-        <div className="feature-nav-grid">
+      {/* Stats Row */}
+      <section className="dash-stats-row">
+        <div className="dash-stat dash-stat-crops">
+          <div className="dash-stat-icon-wrap">🌿</div>
+          <div>
+            <span className="dash-stat-num">{data?.totalCrops ?? 0}</span>
+            <span className="dash-stat-lbl">Crops</span>
+          </div>
+        </div>
+        <div className="dash-stat dash-stat-plots">
+          <div className="dash-stat-icon-wrap">📐</div>
+          <div>
+            <span className="dash-stat-num">{data?.activePlots ?? 0}</span>
+            <span className="dash-stat-lbl">Active Plots</span>
+          </div>
+        </div>
+        <div className="dash-stat dash-stat-tasks">
+          <div className="dash-stat-icon-wrap">📋</div>
+          <div>
+            <span className="dash-stat-num">{data?.upcomingTasks?.length ?? 0}</span>
+            <span className="dash-stat-lbl">Tasks</span>
+          </div>
+        </div>
+        {data?.farmSize && (
+          <div className="dash-stat dash-stat-area">
+            <div className="dash-stat-icon-wrap">🗺️</div>
+            <div>
+              <span className="dash-stat-num">{data.farmSize}</span>
+              <span className="dash-stat-lbl">Farm Size</span>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* Quick Access Grid */}
+      <section className="dash-features-section">
+        <h2 className="dash-section-title">Quick Access</h2>
+        <div className="dash-features-grid">
           {features.map((f) => (
             <button
               key={f.path}
-              className={`feature-nav-card ${f.color}`}
+              className={`dash-fcard ${f.gradient}`}
               onClick={() => navigate(f.path)}
             >
-              <span className="feature-nav-icon">{f.icon}</span>
-              <div className="feature-nav-info">
+              <div className="dash-fcard-icon">{f.icon}</div>
+              <div className="dash-fcard-body">
                 <h3>{f.title}</h3>
                 <p>{f.description}</p>
               </div>
-              <span className="feature-nav-arrow">→</span>
+              <svg className="dash-fcard-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
           ))}
         </div>
       </section>
 
-      <section className="dashboard-grid">
-        <div className="card">
-          <h2>Farm Details</h2>
-          <div className="detail-row">
-            <span className="detail-label">Location</span>
-            <span className="detail-value">{data?.farmName || 'Not set'}</span>
+      {/* Bottom Info Cards */}
+      <section className="dash-bottom-grid">
+        <div className="dash-info-card">
+          <div className="dash-info-header">
+            <span>🏡</span>
+            <h3>Farm Overview</h3>
           </div>
-          <div className="detail-row">
-            <span className="detail-label">Size</span>
-            <span className="detail-value">{data?.farmSize || 'Not set'}</span>
+          <div className="dash-info-rows">
+            <div className="dash-info-row">
+              <span>📍 Location</span>
+              <strong>{data?.farmName || user?.state || 'Not set'}</strong>
+            </div>
+            <div className="dash-info-row">
+              <span>🌾 Crops</span>
+              <strong>{data?.cropsGrown?.length ? data.cropsGrown.join(', ') : 'None listed'}</strong>
+            </div>
           </div>
-          <div className="detail-row">
-            <span className="detail-label">Crops</span>
-            <span className="detail-value">
-              {data?.cropsGrown?.length
-                ? data.cropsGrown.join(', ')
-                : 'None listed'}
-            </span>
-          </div>
+          <button className="dash-info-action" onClick={() => navigate('/farmer/farm-profile')}>
+            View Farm Profile →
+          </button>
         </div>
 
-        <div className="card">
-          <h2>Upcoming Tasks</h2>
+        <div className="dash-info-card">
+          <div className="dash-info-header">
+            <span>📋</span>
+            <h3>Upcoming Tasks</h3>
+          </div>
           {data?.upcomingTasks?.length ? (
-            <ul className="task-list">
-              {data.upcomingTasks.map((t) => (
-                <li key={t.id} className="task-item">
-                  <span className="task-name">{t.task}</span>
-                  <span className="task-due">{t.due}</span>
-                </li>
+            <div className="dash-tasks-list">
+              {data.upcomingTasks.slice(0, 4).map((t) => (
+                <div key={t.id} className="dash-task-item">
+                  <span className="dash-task-dot"></span>
+                  <span className="dash-task-name">{t.task}</span>
+                  <span className="dash-task-due">{t.due}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           ) : (
-            <p className="empty-state">No upcoming tasks</p>
-          )}
-        </div>
-
-        <div className="card">
-          <h2>Recent Activity</h2>
-          {data?.recentActivity?.length ? (
-            <ul className="activity-list">
-              {data.recentActivity.map((a) => (
-                <li key={a.id} className="activity-item">
-                  <span className="activity-action">{a.action}</span>
-                  <span className="activity-date">{a.date}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="empty-state">No recent activity</p>
+            <div className="dash-empty">
+              <span>✨</span>
+              <p>All clear! No pending tasks.</p>
+            </div>
           )}
         </div>
       </section>
