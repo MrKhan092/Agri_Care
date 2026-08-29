@@ -23,34 +23,58 @@ Rules:
 - End with a harvest stage
 - Return ONLY the JSON array, no explanations or markdown`;
 
-  const completion = await groq.chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
-    messages: [{ role: 'user', content: prompt }],
-    temperature: 0.3,
-    max_tokens: 1500,
-  });
+  const validCategories = ['irrigation', 'fertilizer', 'pest-control', 'general', 'harvest'];
 
-  const responseText = completion.choices[0]?.message?.content || '';
+  // Try up to 2 attempts
+  let lastError = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const completion = await groq.chat.completions.create({
+        model: 'openai/gpt-oss-120b',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 2000,
+      });
 
-  // Extract JSON array from response
-  const jsonMatch = responseText.match(/\[[\s\S]*\]/);
-  if (!jsonMatch) {
-    throw new Error('AI did not return valid JSON array');
+      let responseText = completion.choices[0]?.message?.content || '';
+
+      // Strip <think>...</think> blocks (some models output reasoning)
+      responseText = responseText.replace(/<think>[\s\S]*?<\/think>/gi, '');
+
+      // Strip markdown code fences
+      responseText = responseText.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '');
+
+      // Extract JSON array from response
+      const jsonMatch = responseText.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) {
+        throw new Error('AI did not return valid JSON array');
+      }
+
+      const stages = JSON.parse(jsonMatch[0]);
+
+      // Validate and normalize structure
+      const result = stages
+        .filter((s) => s.stageName && typeof s.daysFromSowing === 'number' && s.description)
+        .map((s) => ({
+          stageName: s.stageName,
+          daysFromSowing: s.daysFromSowing,
+          description: s.description,
+          category: validCategories.includes(s.category) ? s.category : 'general',
+        }))
+        .sort((a, b) => a.daysFromSowing - b.daysFromSowing);
+
+      if (result.length === 0) {
+        throw new Error('AI returned 0 valid stages');
+      }
+
+      return result;
+    } catch (err) {
+      lastError = err;
+      console.error(`AI crop timeline attempt ${attempt + 1} failed:`, err.message);
+    }
   }
 
-  const stages = JSON.parse(jsonMatch[0]);
-
-  // Validate structure
-  const validCategories = ['irrigation', 'fertilizer', 'pest-control', 'general', 'harvest'];
-  return stages
-    .filter((s) => s.stageName && typeof s.daysFromSowing === 'number' && s.description)
-    .map((s) => ({
-      stageName: s.stageName,
-      daysFromSowing: s.daysFromSowing,
-      description: s.description,
-      category: validCategories.includes(s.category) ? s.category : 'general',
-    }))
-    .sort((a, b) => a.daysFromSowing - b.daysFromSowing);
+  throw lastError;
 }
 
 module.exports = { generateCropTimelineWithAI };
