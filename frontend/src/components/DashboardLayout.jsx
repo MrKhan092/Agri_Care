@@ -10,10 +10,6 @@ const navItems = {
     { to: '/farmer/dashboard', icon: '📊', label: 'Dashboard' },
     { to: '/farmer/profile', icon: '👤', label: 'Profile' },
   ],
-  supplier: [
-    { to: '/supplier/dashboard', icon: '📊', label: 'Dashboard' },
-    { to: '/supplier/profile', icon: '👤', label: 'Profile' },
-  ],
 };
 
 export default function DashboardLayout() {

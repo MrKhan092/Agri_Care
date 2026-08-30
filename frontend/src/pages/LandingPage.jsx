@@ -23,8 +23,6 @@ export default function LandingPage() {
   const dashboardPath = user
     ? user.role === 'admin'
       ? '/admin/dashboard'
-      : user.role === 'supplier'
-      ? '/supplier/dashboard'
       : '/farmer/dashboard'
     : null;
 
@@ -140,7 +138,7 @@ export default function LandingPage() {
           <div className="how-step">
             <div className="how-step-num">1</div>
             <h3>Create Account</h3>
-            <p>Sign up free as a Farmer, Supplier, or Admin — takes 30 seconds</p>
+            <p>Sign up free as a Farmer — takes 30 seconds</p>
           </div>
           <div className="how-step-connector">→</div>
           <div className="how-step">

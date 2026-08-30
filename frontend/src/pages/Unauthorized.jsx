@@ -24,9 +24,7 @@ export default function Unauthorized() {
               ? '/admin/dashboard'
               : user?.role === 'farmer'
                 ? '/farmer/dashboard'
-                : user?.role === 'supplier'
-                  ? '/supplier/dashboard'
-                  : '/login'
+                : '/login'
           }
           className="btn btn-primary"
           style={{ width: '100%', textDecoration: 'none' }}

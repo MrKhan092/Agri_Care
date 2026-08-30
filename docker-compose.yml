@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: ./backend
+    container_name: agricare-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    # MONGO_URI comes from your .env file (your real Atlas connection string) —
+    # no override here, so Atlas is actually used.
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Relative path instead of a hardcoded "localhost" URL — this way the
+        # frontend calls /api on WHATEVER domain/IP it's currently served from,
+        # so it works correctly whether you're on localhost, your EC2 IP, or
+        # your eventual real domain, without needing to rebuild for each.
+        VITE_API_URL: /api
+    container_name: agricare-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

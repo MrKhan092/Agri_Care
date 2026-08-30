@@ -23,7 +23,6 @@ export default function Register() {
       const data = await register({ name, email, password, role, state, district });
       const userRole = data.user.role;
       if (userRole === 'farmer') navigate('/farmer/dashboard');
-      else if (userRole === 'supplier') navigate('/supplier/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {
@@ -42,28 +41,8 @@ export default function Register() {
 
         {error && <div className="alert alert-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          {/* Role selector */}
-          <div className="form-group">
-            <label>I am a</label>
-            <div className="role-selector">
-              <button
-                type="button"
-                className={`role-btn ${role === 'farmer' ? 'role-btn-active' : ''}`}
-                onClick={() => setRole('farmer')}
-              >
-                🌾 Farmer
-              </button>
-              <button
-                type="button"
-                className={`role-btn ${role === 'supplier' ? 'role-btn-active' : ''}`}
-                onClick={() => setRole('supplier')}
-              >
-                📦 Supplier
-              </button>
-            </div>
-          </div>
 
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <input

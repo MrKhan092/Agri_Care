@@ -30,9 +30,9 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Please fill in all required fields' });
     }
 
-    // Only farmer and supplier can self-register
-    if (!['farmer', 'supplier'].includes(role)) {
-      return res.status(400).json({ message: 'Invalid role. Only farmer or supplier can register.' });
+    // Only farmer can self-register
+    if (role !== 'farmer') {
+      return res.status(400).json({ message: 'Invalid role. Only farmer can register.' });
     }
 
     const existingUser = await User.findOne({ email });

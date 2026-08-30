@@ -87,13 +87,6 @@ export default function AdminDashboard() {
             <p className="stat-label">Farmers</p>
           </div>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon">📦</span>
-          <div>
-            <p className="stat-value">{stats?.totalSuppliers ?? '—'}</p>
-            <p className="stat-label">Suppliers</p>
-          </div>
-        </div>
       </section>
 
       {/* User Management */}
@@ -108,7 +101,6 @@ export default function AdminDashboard() {
             >
               <option value="">All Roles</option>
               <option value="farmer">Farmer</option>
-              <option value="supplier">Supplier</option>
               <option value="admin">Admin</option>
             </select>
           </div>

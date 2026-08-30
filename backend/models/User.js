@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['admin', 'farmer', 'supplier'],
+      enum: ['admin', 'farmer'],
       required: [true, 'Role is required'],
     },
     status: {
@@ -56,19 +56,7 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
 
-    // Supplier-specific fields
-    businessName: {
-      type: String,
-      default: '',
-    },
-    businessLocation: {
-      type: String,
-      default: '',
-    },
-    verified: {
-      type: Boolean,
-      default: false,
-    },
+
   },
   { timestamps: true }
 );

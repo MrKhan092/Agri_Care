@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import FarmerDashboard from './pages/FarmerDashboard';
-import SupplierDashboard from './pages/SupplierDashboard';
 import Unauthorized from './pages/Unauthorized';
 import MandiPrice from './pages/MandiPrice';
 import Weather from './pages/Weather';
@@ -31,8 +30,6 @@ function RoleRedirect() {
       return <Navigate to="/admin/dashboard" replace />;
     case 'farmer':
       return <Navigate to="/farmer/dashboard" replace />;
-    case 'supplier':
-      return <Navigate to="/supplier/dashboard" replace />;
     default:
       return <Navigate to="/login" replace />;
   }
@@ -145,16 +142,6 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['farmer']}>
                 <GovSchemes />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Supplier */}
-          <Route
-            path="/supplier/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={['supplier']}>
-                <SupplierDashboard />
               </ProtectedRoute>
             }
           />

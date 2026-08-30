@@ -28,7 +28,6 @@ export default function Login() {
 
       if (userRole === 'admin') navigate('/admin/dashboard');
       else if (userRole === 'farmer') navigate('/farmer/dashboard');
-      else if (userRole === 'supplier') navigate('/supplier/dashboard');
       else navigate('/login');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
@@ -40,7 +39,6 @@ export default function Login() {
   const roleConfig = {
     admin: { icon: '🛡️', label: 'Admin' },
     farmer: { icon: '🌾', label: 'Farmer' },
-    supplier: { icon: '📦', label: 'Supplier' },
   };
 
   return (

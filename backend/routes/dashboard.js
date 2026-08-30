@@ -15,7 +15,6 @@ router.get('/admin', authorize('admin'), async (req, res) => {
     const totalUsers = await User.countDocuments();
     const pendingUsers = await User.countDocuments({ status: 'pending' });
     const totalFarmers = await User.countDocuments({ role: 'farmer', status: 'approved' });
-    const totalSuppliers = await User.countDocuments({ role: 'supplier', status: 'approved' });
 
     const recentUsers = await User.find()
       .select('name email role status createdAt')
@@ -28,7 +27,6 @@ router.get('/admin', authorize('admin'), async (req, res) => {
         totalUsers,
         pendingUsers,
         totalFarmers,
-        totalSuppliers,
         recentUsers,
       },
     });
@@ -95,24 +93,5 @@ router.get('/farmer', authorize('farmer'), async (req, res) => {
   }
 });
 
-// GET /api/dashboard/supplier
-router.get('/supplier', authorize('supplier'), (req, res) => {
-  res.json({
-    message: `Welcome back, ${req.user.name}!`,
-    data: {
-      businessName: req.user.businessName || 'My Business',
-      businessLocation: req.user.businessLocation || 'Not set',
-      verified: req.user.verified || false,
-      totalOrders: 24,
-      pendingOrders: 3,
-      productsListed: 18,
-      recentOrders: [
-        { id: 1, item: 'Organic Fertilizer (50kg)', buyer: 'Green Valley Farm', date: '2026-08-14' },
-        { id: 2, item: 'Drip Irrigation Kit', buyer: 'Sunrise Fields', date: '2026-08-13' },
-        { id: 3, item: 'Wheat Seeds (25kg)', buyer: 'Harvest Hills', date: '2026-08-12' },
-      ],
-    },
-  });
-});
 
 module.exports = router;
