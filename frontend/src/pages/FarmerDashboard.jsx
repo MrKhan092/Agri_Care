@@ -17,11 +17,16 @@ export default function FarmerDashboard() {
       .catch((err) => console.error('Dashboard fetch error:', err))
       .finally(() => setLoading(false));
 
-    // Fetch weather silently
-    if (user?.state) {
-      api.get(`/weather?city=${user.district || user.state}`)
-        .then((res) => setWeather(res.data))
-        .catch(() => {});
+    // Fetch weather silently using geolocation (the API requires lat/lon)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          api.get(`/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
+            .then((res) => setWeather(res.data))
+            .catch(() => {});
+        },
+        () => {} // silently ignore if denied
+      );
     }
   }, []);
 
