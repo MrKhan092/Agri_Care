@@ -19,6 +19,17 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
+const promBundle = require('express-prom-bundle');
+
+const metricsMiddleware = promBundle({
+  includeMethod: true,
+  includePath: true,
+  includeStatusCode: true,
+  metricsPath: '/metrics',
+  promClient: { collectDefaultMetrics: {} },
+});
+
+app.use(metricsMiddleware);
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
