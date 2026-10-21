@@ -12,7 +12,6 @@ Built with **React**, **Express**, **MongoDB**, and **JWT cookie-based authentic
 |---------|-------------|
 | 📊 **Farmer Dashboard** | Farm overview with active crops, upcoming tasks, and quick stats |
 | 🏪 **Mandi Prices** | Real-time commodity prices from markets across India |
-| 🌤️ **Weather Forecast** | 5-day hyperlocal weather forecasts |
 | 🧪 **Soil Analysis** | AI-powered soil health reports from uploaded PDF reports |
 | 📅 **Crop Calendar** | Stage-by-stage care timelines for 15+ crops |
 | 💰 **Farm Management** | Track expenses, income, and inventory |
@@ -236,16 +235,7 @@ Then run `docker compose up --build -d` on the server.
 
 ---
 
-## 🔐 Default Admin Credentials
 
-| Field    | Value              |
-|----------|--------------------|
-| Email    | `admin@agricare.com` |
-| Password | `admin123`         |
-
-> ⚠️ **Change these in production!** Set `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env` before running `npm run seed`.
-
----
 
 ## ⚙️ Environment Variables
 
